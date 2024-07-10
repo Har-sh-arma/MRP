@@ -9,7 +9,8 @@ def get_Cookie(headers):
         return None
 
 def get_path(headers):
-    pattern = r'^(?:GET|POST|PUT|PATCH|DELETE) (/.*?) HTTP/1\.1'
+    print(headers)
+    pattern = r'^(?:GET|POST|PUT|PATCH|DELETE) (/.*?) HTTP/1'
     url_path = re.match(pattern , headers.decode('utf-8')).group(1)
     cookie_path = get_Cookie(headers)
     print(f"Cookie path: {cookie_path}")
