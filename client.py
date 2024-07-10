@@ -15,7 +15,7 @@ import socket
 import re
 from proxy_utils import recv_data, get_path
 
-SERVER_ADDR = "127.0.0.1"
+SERVER_ADDR = "ec2-16-170-250-144.eu-north-1.compute.amazonaws.com"
 SERVER_PORT = 1001
 byte_size = 32
 ASSIGNED_PATH = "/abc"
