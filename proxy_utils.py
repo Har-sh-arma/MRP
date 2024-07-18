@@ -33,6 +33,12 @@ def recv_data(conn, addr, byte_size):
         while(len(body) < content_length):
             data1 = conn.recv(byte_size)
             body += data1
+    elif b'Transfer-Encoding: chunked' in headers:
+        while True:
+            data1 = conn.recv(byte_size)
+            body += data1
+            if b'0\r\n\r\n' in body:
+                break
 
 
     return headers, body
