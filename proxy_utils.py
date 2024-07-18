@@ -9,19 +9,16 @@ def get_Cookie(headers):
         return None
 
 def get_path(headers):
-    print(headers)
     pattern = r'^(?:GET|POST|PUT|PATCH|DELETE) (/.*?) HTTP/1'
     url_path = re.match(pattern , headers.decode('utf-8')).group(1)
     cookie_path = get_Cookie(headers)
-    print(f"Cookie path: {cookie_path}")
-    # if cookie_path:
-    #     return cookie_path
+    print(url_path, cookie_path)
 
     return url_path, cookie_path
 
 
 def recv_data(conn, addr, byte_size):
-    print(f"receiving from {addr[0]}:{addr[1]}")
+    print(f"⬅️⬅️⬅️ {addr[0]}:{addr[1]}")
     data = b''
     while True:
         data1 = conn.recv(byte_size)

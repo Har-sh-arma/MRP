@@ -35,7 +35,10 @@ print("Listening...")
 while True:
     conn, addr = sock.accept()
     headers, body = recv_data(conn, addr, byte_size)
-    detected_url_path , detected_cookie_path = get_path(headers).encode('utf-8').removesuffix(b'\r')
+    try:
+        detected_url_path, detected_cookie_path = get_path(headers)[0].encode('utf-8').removesuffix(b'\r'), get_path(headers)[1].encode('utf-8').removesuffix(b'\r')
+    except AttributeError:
+        continue
     new_path_flag = False
     for i in connections:
         if i.path == detected_url_path:

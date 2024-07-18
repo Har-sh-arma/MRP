@@ -50,9 +50,14 @@ sock.send(b"Path:" + ASSIGNED_PATH.encode('utf-8'))
 print("Connection Init")
 while True:
     headers, body = recv_data(sock, (SERVER_ADDR, SERVER_PORT), byte_size)
-    print("Client <-- remote Server")
+    print("Client ⬅️ remote Server")
 
-    detected_url_path, detected_cookie_path = get_path(headers).encode('utf-8').removesuffix(b'\r')
+    try:
+        detected_cookie_path =  get_path(headers)[1].encode('utf-8').removesuffix(b'\r')
+    except AttributeError:
+        print("❌Cookie")
+    finally:
+        detected_url_path = get_path(headers)[0].encode('utf-8').removesuffix(b'\r')
     detected_path = detected_url_path
     if detected_path == ASSIGNED_PATH.encode('utf-8'):
         headers = re.sub(ASSIGNED_PATH.encode('utf-8'), b"/", headers)
@@ -60,14 +65,14 @@ while True:
     local_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     local_sock.connect((LOCAL_SERVER, LOCAL_PORT))
     local_sock.send(headers + body)
-    print("local server <-- Client")
+    print("local server ⬅️ Client")
     
     resp_headers, resp_body = recv_data(local_sock, (LOCAL_SERVER, LOCAL_PORT), byte_size)
     local_sock.close()
-    print("local server --> Client")
+    print("local server ➡️ Client")
     
     resp = resp_headers + resp_body
     sock.send(resp)
-    print("Client --> remote Server")
+    print("Client ➡️ remote Server")
 
 
