@@ -27,6 +27,7 @@ def recv_data(conn, addr, byte_size):
             break
     headers, body = data.split(b'\r\n\r\n', 1)
     headers+= b'\r\n\r\n'
+    print(headers)
     # Parse based on Content-Length
     if b'Content-Length' in headers:
         content_length = int((re.search(b'Content-Length: (\d+)', headers).group(1)).decode('utf-8'))
@@ -37,6 +38,7 @@ def recv_data(conn, addr, byte_size):
         while True:
             data1 = conn.recv(byte_size)
             body += data1
+            print(body)
             if b'0\r\n\r\n' in body:
                 break
 

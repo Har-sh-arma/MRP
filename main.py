@@ -6,7 +6,7 @@ import socket
 import re
 from server_listeners import ServerListener
 from proxy_utils import recv_data, get_path, add_path_cookie, get_Cookie
-
+from responder import ResponseThread
 
 def print_utf(inp):
     print(f"\n{inp.decode('utf-8')}")
@@ -34,28 +34,30 @@ print("Listening...")
 
 while True:
     conn, addr = sock.accept()
-    headers, body = recv_data(conn, addr, byte_size)
-    try:
-        detected_url_path, detected_cookie_path = get_path(headers)[0].encode('utf-8').removesuffix(b'\r'), get_path(headers)[1].encode('utf-8').removesuffix(b'\r')
-    except AttributeError:
-        continue
-    new_path_flag = False
-    for i in connections:
-        if i.path == detected_url_path:
-            detected_path = detected_url_path
-            new_path_flag = True
-            break
+    ResponseThread(conn, addr, byte_size, connections).start()
 
-    if not new_path_flag:
-        detected_path = detected_cookie_path
+    # headers, body = recv_data(conn, addr, byte_size)
+    # try:
+    #     detected_url_path, detected_cookie_path = get_path(headers)[0].encode('utf-8').removesuffix(b'\r'), get_path(headers)[1].encode('utf-8').removesuffix(b'\r')
+    # except AttributeError:
+    #     continue
+    # new_path_flag = False
+    # for i in connections:
+    #     if i.path == detected_url_path:
+    #         detected_path = detected_url_path
+    #         new_path_flag = True
+    #         break
 
-    print(f"Detected path: {detected_path}")
+    # if not new_path_flag:
+    #     detected_path = detected_cookie_path
 
-    for i in connections:
-        if i.path == detected_path:
-            headers, body = i.forward_request(headers + body)
-        #handle no path match
-    headers = add_path_cookie(headers, detected_path)
-    conn.send(headers + body)
-    conn.close()
+    # print(f"Detected path: {detected_path}")
+
+    # for i in connections:
+    #     if i.path == detected_path:
+    #         headers, body = i.forward_request(headers + body)
+    #     #handle no path match
+    # headers = add_path_cookie(headers, detected_path)
+    # conn.send(headers + body)
+    # conn.close()
 
