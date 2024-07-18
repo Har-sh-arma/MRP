@@ -14,10 +14,10 @@ def get_path(headers):
     url_path = re.match(pattern , headers.decode('utf-8')).group(1)
     cookie_path = get_Cookie(headers)
     print(f"Cookie path: {cookie_path}")
-    if cookie_path:
-        return cookie_path
+    # if cookie_path:
+    #     return cookie_path
 
-    return url_path
+    return url_path, cookie_path
 
 
 def recv_data(conn, addr, byte_size):

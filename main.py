@@ -35,7 +35,17 @@ print("Listening...")
 while True:
     conn, addr = sock.accept()
     headers, body = recv_data(conn, addr, byte_size)
-    detected_path = get_path(headers).encode('utf-8').removesuffix(b'\r')
+    detected_url_path , detected_cookie_path = get_path(headers).encode('utf-8').removesuffix(b'\r')
+    new_path_flag = False
+    for i in connections:
+        if i.path == detected_url_path:
+            detected_path = detected_url_path
+            new_path_flag = True
+            break
+
+    if not new_path_flag:
+        detected_path = detected_cookie_path
+
     print(f"Detected path: {detected_path}")
 
     for i in connections:
