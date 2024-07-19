@@ -22,7 +22,7 @@ for i in range(1000, 1005):
 
 bind_ADDR = "127.0.0.1"
 bind_PORT = 1234
-byte_size = 32
+byte_size = 1
 
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
