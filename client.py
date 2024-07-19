@@ -18,7 +18,7 @@ import argparse
 
 SERVER_ADDR = "ec2-16-170-250-144.eu-north-1.compute.amazonaws.com"
 SERVER_PORT = 1001
-byte_size = 32
+byte_size = 1
 ASSIGNED_PATH = "/abc"
 LOCAL_SERVER = "127.0.0.1"
 LOCAL_PORT = 8000
