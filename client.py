@@ -50,7 +50,7 @@ sock.send(b"Path:" + ASSIGNED_PATH.encode('utf-8'))
 print("Connection Init")
 while True:
     headers, body = recv_data(sock, (SERVER_ADDR, SERVER_PORT), byte_size)
-    print("Client ⬅️ remote Server")
+    print(f"\nClient ⬅️ {headers[0:15]} ⬅️ remote Server")
 
     try:
         detected_cookie_path =  get_path(headers)[1].encode('utf-8').removesuffix(b'\r')
@@ -65,7 +65,7 @@ while True:
     local_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     local_sock.connect((LOCAL_SERVER, LOCAL_PORT))
     local_sock.send(headers + body)
-    print("local server ⬅️ Client")
+    print(f"local server ⬅️ {headers[0:15]} ⬅️ Client")
     
     resp_headers, resp_body = recv_data(local_sock, (LOCAL_SERVER, LOCAL_PORT), byte_size)
     local_sock.close()

@@ -3,7 +3,6 @@ import re
 def get_Cookie(headers):
     pattern = r'(?:[\S\s]*)?Cookie: (?:[\S\s]*)?path=(.*)(?:;|\n)'
     try:
-        print()
         return re.match(pattern, headers.decode('utf-8')).group(1)
     except:
         return None
@@ -12,7 +11,7 @@ def get_path(headers):
     pattern = r'^(?:GET|POST|PUT|PATCH|DELETE) (/.*?) HTTP/1'
     url_path = re.match(pattern , headers.decode('utf-8')).group(1)
     cookie_path = get_Cookie(headers)
-    print(url_path, cookie_path)
+    # print(url_path, cookie_path)
 
     return url_path, cookie_path
 
@@ -27,7 +26,7 @@ def recv_data(conn, addr, byte_size):
             break
     headers, body = data.split(b'\r\n\r\n', 1)
     headers+= b'\r\n\r\n'
-    print(headers)
+    # print(headers)
     # Parse based on Content-Length
     if b'Content-Length' in headers:
         content_length = int((re.search(b'Content-Length: (\d+)', headers).group(1)).decode('utf-8'))
