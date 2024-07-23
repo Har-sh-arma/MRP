@@ -31,7 +31,7 @@ class ResponseThread(threading.Thread):
         if not self.new_path_flag:
             self.detected_path = self.detected_cookie_path
         
-        for i in range(self.connections):
+        for i in range(len(self.connections)):
             if self.connections[i].path == self.detected_path:
                 self.connection_locks[i].acquire()
                 self.headers, self.body = self.connections[i].forward_request(self.headers + self.body)
