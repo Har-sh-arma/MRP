@@ -7,6 +7,7 @@ import re
 from server_listeners import ServerListener
 from proxy_utils import recv_data, get_path, add_path_cookie, get_Cookie
 from responder import ResponseThread
+import threading
 
 def print_utf(inp):
     print(f"\n{inp.decode('utf-8')}")
@@ -14,10 +15,12 @@ def print_utf(inp):
 
 print("Initializing sockets for the proxy client to connect to...")
 connections = []
+connection_locks = []
 
 for i in range(1000, 1005):
     listener = ServerListener(i)
     connections.append(listener)
+    connection_locks.append(threading.Lock())
     listener.start()
 
 bind_ADDR = "127.0.0.1"
@@ -34,7 +37,7 @@ print("Listening...")
 
 while True:
     conn, addr = sock.accept()
-    ResponseThread(conn, addr, byte_size, connections).start()
+    ResponseThread(conn, addr, byte_size, connections, connection_locks).start()
 
     # headers, body = recv_data(conn, addr, byte_size)
     # try:
