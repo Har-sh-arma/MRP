@@ -15,6 +15,7 @@ class ResponseThread(threading.Thread):
 
     def run(self):
         self.headers, self.body = recv_data(self.conn, self.addr, self.byte_size)
+        print(f"\nRemote ⬅️ {self.headers[0:15]} ⬅️ Browser")
         try:
             self.detected_cookie_path =  get_path(self.headers)[1].encode('utf-8').removesuffix(b'\r')
         except AttributeError:
@@ -38,6 +39,8 @@ class ResponseThread(threading.Thread):
     #handle no path match
         self.headers = add_path_cookie(self.headers, self.detected_path)
         self.conn.send(self.headers + self.body)
+        print("Remote ➡️  Browser")
+        print(self.body)
         self.conn.close()
         return
 
