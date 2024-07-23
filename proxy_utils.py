@@ -40,7 +40,6 @@ def recv_data(conn, addr, byte_size):
             print(body)
             if b'0\r\n\r\n' in body:
                 break
-    print(headers+body)
 
     return headers, body
 

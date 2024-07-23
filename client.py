@@ -74,5 +74,6 @@ while True:
     resp = resp_headers + resp_body
     sock.send(resp)
     print("Client ➡️ remote Server")
+    print(resp)
 
 
